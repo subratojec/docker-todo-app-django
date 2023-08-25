@@ -1,0 +1,27 @@
+<!-- todo_app/templates/todo_app/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ToDo App</title>
+  </head>
+  <body>
+    <h1>ToDo List</h1>
+    <form method="post" action="{% url 'todo_app:todo-list' %}">
+      {% csrf_token %}
+      <input type="text" name="title" placeholder="Enter ToDo title" required />
+      <button type="submit">Add</button>
+    </form>
+    <ul>
+      {% for todo in todos %}
+      <li>
+        {{ todo.title }}
+        <a href="{% url 'todo_app:todo-detail' todo.pk %}">View</a>
+        <form method="post" action="{% url 'todo_app:todo-delete' todo.pk %}">
+          {% csrf_token %}
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
