@@ -3,11 +3,11 @@ FROM python:3.9 AS builder
 
 WORKDIR /app
 
-# copy the requirement file to the container 
-COPY .requirement.txt /app/
+# copy the requirements file to the container 
+COPY requirements.txt /app/
 
 #Install the project dependencies
-RUN pip install --no-cache-dir -r requirement.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the code to the container
 COPY . /app/
