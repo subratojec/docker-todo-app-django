@@ -1,6 +1,6 @@
 # Django Todo REST APIs
 
-This repository contains a Django-based application that provides REST APIs for managing todo tasks. With this APIs, you can create, read, update, and delete tasks, as well as mark tasks as completed or incomplete.
+This repository contains a Django-based application that provides REST APIs for managing todo tasks. With this APIs, you can create, read, update, and delete tasks, as well as mark tasks as completed or incomplete..
 
 ## Features
 
