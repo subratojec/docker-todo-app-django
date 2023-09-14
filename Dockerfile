@@ -1,18 +1,18 @@
-# Stage 1 : Build the application
+# Stage 1: Build the application
 FROM python:3.9 AS builder
 
 WORKDIR /app
 
-# copy the requirements file to the container 
+# Copy the requirements file to the container 
 COPY requirements.txt /app/
 
-#Install the project dependencies
+# Install the project dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the code to the container
 COPY . /app/
 
-# Stage 2 : Create runtime image
+# Stage 2: Create runtime image
 FROM python:3.9-slim
 
 WORKDIR /app
