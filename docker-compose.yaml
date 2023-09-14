@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  todo-be:
+    image: todo-be:latest
+    depends_on:
+      - db
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5431
+      POSTGRES_USER: localhost
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 8000:8000
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: todo
+    ports:
+      - "5432:5432"
