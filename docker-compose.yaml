@@ -1,35 +1,61 @@
-# docker compose file for the todo-be application with Django and Postgres
+# Docker Compose file for the todo-be application with Django and Postgres
+
+# Specifies the version of the Docker Compose file format.
 version: "3.9"
 
+# Defines the services that make up the application.
 services:
+  # Configuration for the todo-be (Django) service.
   todo-be:
+    # Specifies the Docker image to use for this service.
     image: sohit28/todo-be:latest
+
+    # Maps port 8000 on the host to port 8000 in the container.
     ports:
       - 8000:8000
+
+    # Specifies the network to which this service should connect.
     networks:
       - postgresql-network
+
+    # Indicates that this service depends on the "db" service to start.
     depends_on:
       - db
+
+    # Sets environment variables required by the Django application to connect to the Postgres database.
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres # add the password
+      POSTGRES_PASSWORD: postgres # Password for the Postgres database user.
+
+    # Defines the command to run when starting the container.
     command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
 
+  # Configuration for the "db" (Postgres) service.
   db:
+    # Specifies the Docker image to use for this service.
     image: postgres:latest
+
+    # Maps port 5432 on the host to port 5432 in the container.
     ports:
       - "5432:5432"
+
+    # Specifies the network to which this service should connect.
     networks:
       - postgresql-network
+
+    # Sets environment variables required for the Postgres database configuration.
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres # add the password
+      POSTGRES_PASSWORD: postgres # Password for the Postgres database user.
+
+    # Mounts a volume to persist data in the Postgres container.
     volumes:
       - ./data:/var/lib/postgresql/data
 
+# Defines a custom network named "postgresql-network" for communication between services.
 networks:
   postgresql-network:
     driver: bridge
