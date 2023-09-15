@@ -1,26 +1,35 @@
+# docker compose file for the todo-be application with Django and Postgres
 version: "3.9"
 
 services:
   todo-be:
-    image: todo-be:latest
+    image: sohit28/todo-be:latest
+    ports:
+      - 8000:8000
+    networks:
+      - postgresql-network
     depends_on:
       - db
     environment:
-      POSTGRES_HOST: postgres
+      POSTGRES_HOST: db
       POSTGRES_PORT: 5432
-      POSTGRES_USER: localhost
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - 8000:8000
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres # add the password
     command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
 
   db:
-    image: postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    networks:
+      - postgresql-network
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: todo
+      POSTGRES_PASSWORD: postgres # add the password
     volumes:
       - ./data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+
+networks:
+  postgresql-network:
+    driver: bridge
