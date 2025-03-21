@@ -1,12 +1,68 @@
-<!-- todo_app/templates/todo_app/index.html -->
 <!DOCTYPE html>
 <html>
   <head>
     <title>ToDo App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      input[type="text"] {
+        padding: 8px;
+        width: 300px;
+        margin-right: 10px;
+      }
+      button {
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      li:last-child {
+        border-bottom: none;
+      }
+      a {
+        color: #007BFF;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .delete-btn {
+        background-color: #f44336;
+      }
+      .delete-btn:hover {
+        background-color: #d32f2f;
+      }
+    </style>
   </head>
   <body>
     <h1>ToDo List</h1>
-    <form method="post" action="{% url 'todo_app:todo-list' %}">
+    <form method="post" action="{% url 'index' %}">
       {% csrf_token %}
       <input type="text" name="title" placeholder="Enter ToDo title" required />
       <button type="submit">Add</button>
@@ -14,13 +70,17 @@
     <ul>
       {% for todo in todos %}
       <li>
-        {{ todo.title }}
-        <a href="{% url 'todo_app:todo-detail' todo.pk %}">View</a>
-        <form method="post" action="{% url 'todo_app:todo-delete' todo.pk %}">
-          {% csrf_token %}
-          <button type="submit">Delete</button>
-        </form>
+        <span>{{ todo.title }} {% if todo.completed %}(Completed){% endif %}</span>
+        <div>
+          <a href="{% url 'todo-detail' todo.pk %}">View</a>
+          <form method="post" action="{% url 'todo-delete' todo.pk %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn">Delete</button>
+          </form>
+        </div>
       </li>
+      {% empty %}
+      <li>No ToDo items yet.</li>
       {% endfor %}
     </ul>
   </body>
